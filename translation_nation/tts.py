@@ -1,6 +1,8 @@
+# @source https://cloud.google.com/text-to-speech/docs/create-audio-text-client-libraries
+
 from google.cloud import texttospeech as tts
 
-def text_to_speech(text, lang, output_file_name):
+def text_to_speech(text: str, lang: str, output_file_name: str):
     client = tts.TextToSpeechClient()
     synthesis_input = tts.SynthesisInput(text=text)
     voice = tts.VoiceSelectionParams(

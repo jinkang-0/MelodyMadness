@@ -1,7 +1,9 @@
 function App() {
   return (
     <div className="App">
-      Hello World
+        <div className="w-full text-center">
+            Hello World
+        </div>
     </div>
   );
 }

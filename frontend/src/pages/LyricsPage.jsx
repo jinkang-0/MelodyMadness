@@ -28,7 +28,6 @@ export default function LyricsPage() {
                 return res.json();
             })
             .then(data => {
-                console.log(data);
                 const artistList = data.artists;
                 setArtists(artistList);
             })
@@ -62,7 +61,6 @@ export default function LyricsPage() {
         })
         .then(data => {
             const lyrics = data.lyrics;
-            console.log(data);
             setLoading(false);
             setSubmitted(true);
             setLyrics(lyrics);
@@ -72,7 +70,7 @@ export default function LyricsPage() {
     return (
         <main className="flex flex-col items-center h-full">
             <div className="flex flex-col items-start mt-16 w-1/3">
-                <p className="mb-2">Write a prompt for a melody!</p>
+                <p className="mb-2">Generate lyrics in the style of an artist!</p>
                 <ArtistSelect artists={artists} value={selectedArtist} onChange={e => handleSelect(e.target.value)} />
                 <ActionButton text="Submit" className="bg-twitterBlue mx-auto mt-4" onClick={handleSubmit} />
             </div>
@@ -80,7 +78,7 @@ export default function LyricsPage() {
                 (isLoading) ?
                     <Loading />
                     :
-                    <SlideUpBox className="w-2/5 mt-16">
+                    <SlideUpBox className="w-2/5 my-16">
                         <div className="w-4/5 h-1 mx-auto border-t border-t-lightGray"></div>
                         <p className="mt-8 mb-2">Generated lyrics!</p>
                         <div className="bg-inputGray rounded-md p-4">

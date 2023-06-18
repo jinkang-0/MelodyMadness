@@ -30,7 +30,7 @@ def scrape_songs(artist):
 
 def get_artists():
     array = []
-    attributes = collection.find()
+    attributes = collection.find({})
     for attribute in attributes:
         array.append(attribute["name"])
     return array

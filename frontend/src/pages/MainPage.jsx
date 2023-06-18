@@ -1,5 +1,6 @@
 import React from "react";
 import LinkButton from "../components/LinkButton";
+import unsplashImage from "../graphics/unsplash_image.png";
 
 export default function MainPage() {
     return (
@@ -10,16 +11,28 @@ export default function MainPage() {
                     <br />
                     Madness
                 </h1>
-                <p className="text-lg mb-4">A short melody generator for the busybody.</p>
-                <LinkButton text="Try it out" link="melody" className="bg-black" />
+                <p className="text-lg mb-4">
+                    A short melody generator for the busybody.
+                </p>
+                <LinkButton
+                    text="Try it out"
+                    link="melody"
+                    className="bg-black"
+                />
                 <span className="mt-2 text-darkGray text-xs w-2/3">
                     * Access is only available in the duration of the Berkeley
                     AI Hackathon hosted in 2023. Pricing will be adjusted after
                     June 18th, 2023.
                 </span>
             </div>
-            <div className="h-full" style={{ backgroundImage: 'url("/unsplash_image.png")', clipPath: 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)', backgroundPosition: '50% 50%' }}>
-            </div>
+            <div
+                className="h-full"
+                style={{
+                    backgroundImage: `url(${unsplashImage})`,
+                    clipPath: "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+                    backgroundPosition: "50% 50%"
+                }}
+            ></div>
         </main>
     );
 }

@@ -9,7 +9,7 @@ export default function NavBar() {
     const highlighted = "text-white";
     const unhighlighted = "text-lightGray hover:brightness-125 transition";
 
-    const links = ['Melody', 'Lyrics', 'Cover'];
+    const links = ['Melody', 'Lyrics'];
 
     return (
         <nav className="flex w-full bg-nav gap-4 items-center">

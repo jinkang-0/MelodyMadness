@@ -15,7 +15,6 @@ function App() {
                 <Route index element={<MainPage />} />
                 <Route path="melody" element={<MelodyPage />} />
                 <Route path="lyrics" element={<LyricsPage />} />
-                <Route path="cover" element={<CoverPage />} />
                 <Route path="error" element={<ErrorPage />} />
                 <Route path="*" element={<NotFound />} />
             </Route>

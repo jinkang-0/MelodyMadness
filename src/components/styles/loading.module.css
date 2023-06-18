@@ -1,0 +1,8 @@
+.loading {
+    animation: spinner 2s infinite cubic-bezier(.32,.1,.38,.68);
+}
+
+@keyframes spinner {
+    from { transform: rotate(120deg) }
+    to { transform: rotate(480deg) }
+}

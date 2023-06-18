@@ -47,6 +47,11 @@ def lyrics(request):
     if request.method == 'POST':
         selected_artist = request.POST.get("artist")
         return JsonResponse({ "lyrics": generate_lyrics(selected_artist) })
-    else:
-        return JsonResponse({ "artists": get_artists() })
+    return render(request, "index.html", {})
+
+@csrf_exempt
+def artists(request):
+    if request.method == 'POST':
+        return JsonResponse({ 'artists': get_artists() })
+    return render(request, "index.html", {})
 

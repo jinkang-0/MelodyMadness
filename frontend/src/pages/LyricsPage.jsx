@@ -16,8 +16,8 @@ export default function LyricsPage() {
 
     useEffect(() => {
         (async () => {
-            await fetch('/api/lyrics', {
-                method: 'GET',
+            await fetch('/api/artists', {
+                method: 'POST',
                 credentials: 'same-origin',
                 headers: {
                     'Accept': 'application/json',
@@ -28,25 +28,12 @@ export default function LyricsPage() {
                 return res.json();
             })
             .then(data => {
+                console.log(data);
                 const artistList = data.artists;
                 setArtists(artistList);
             })
         })();
     }, []);
-
-    // const lyrics = `
-    //     Lorem ipsum dolor sit amet consectetur.
-    //     Amet quisque diam, sit.
-    //     Interdum lobortis accumsan.
-        
-    //     Pulvinar gravida ac in auctor.
-    //     Suspendisse, sed scelerisque.
-    //     Donec lectus porttitor et.
-        
-    //     Cam eu in tristique nec.
-    //     In sit gravida condimentum.
-    //     Elementum.
-    // `;
 
     // update selected artist
     function handleSelect(value) {
@@ -62,7 +49,7 @@ export default function LyricsPage() {
         setLoading(true);
 
         await fetch('/api/lyrics', {
-            method: 'GET',
+            method: 'POST',
             credentials: 'same-origin',
             headers: {
                 'Accept': 'application/json',
@@ -75,6 +62,7 @@ export default function LyricsPage() {
         })
         .then(data => {
             const lyrics = data.lyrics;
+            console.log(data);
             setLoading(false);
             setSubmitted(true);
             setLyrics(lyrics);

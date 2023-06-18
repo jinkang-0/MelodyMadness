@@ -12,7 +12,7 @@ keys = dotenv_values(".env.local")
 
 # Initialize Mongo Database Connection
 uri = keys["MONGO_URI"]
-client = MongoClient("mongodb+srv://builthigher:IEdj8iMmYdpf6h37@cluster0.spcjo5b.mongodb.net/?retryWrites=true&w=majority", server_api=ServerApi("1"))
+client = MongoClient(uri, server_api=ServerApi("1"))
 database = client["ai_musician"]
 collection = database["musicians"]
 
@@ -29,7 +29,11 @@ def scrape_songs(artist):
 
     return lyrics
 def get_artists():
-    return ["Tupac", "Miley Cyrus", "Eminem","Jay-Z"]
+    array = []
+    attributes = collection.find()
+    for attribute in attributes:
+        array.append(attribute["name"])
+    return array
 def generate_lyric_prompt(artist):
     return f'''Pretend that you are an up and coming artist and create a totally unique hit song inspired by {artist}.\nHere are some of their greatest works for inspiration!
     {scrape_songs(artist)}

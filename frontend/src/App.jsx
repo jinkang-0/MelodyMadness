@@ -3,7 +3,6 @@ import MainPage from "./pages/MainPage";
 import MelodyPage from "./pages/MelodyPage";
 import Layout from "./Layout";
 import LyricsPage from "./pages/LyricsPage";
-import CoverPage from "./pages/CoverPage";
 import NotFound from "./pages/NotFound";
 import ErrorPage from "./pages/ErrorPage";
 

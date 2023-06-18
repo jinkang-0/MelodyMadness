@@ -1,7 +1,6 @@
 import { useState } from "react";
 import SendButton from "../components/SendButton";
 import Loading from "../components/Loading";
-import AudioPlayer from "../components/AudioPlayer";
 
 export default function MelodyPage() {
 

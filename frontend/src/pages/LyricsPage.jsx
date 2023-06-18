@@ -3,28 +3,50 @@ import ActionButton from "../components/ActionButton";
 import Loading from "../components/Loading";
 import SlideUpBox from "../components/SlideUpBox";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function LyricsPage() {
 
-    const artists = ['Drake', 'JayZ', 'Miley Cyrus', 'Eminem'];
+    // const artists = ['Drake', 'JayZ', 'Miley Cyrus', 'Eminem'];
+    const [artists, setArtists] = useState([]);
     const [hasSubmitted, setSubmitted] = useState(false);
     const [isLoading, setLoading] = useState(false);
+    const [lyrics, setLyrics] = useState("");
     var selectedArtist = "";
 
-    const lyrics = `
-        Lorem ipsum dolor sit amet consectetur.
-        Amet quisque diam, sit.
-        Interdum lobortis accumsan.
+    useEffect(() => {
+        (async () => {
+            await fetch('/api/lyrics', {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                const artistList = data.artists;
+                setArtists(artistList);
+            })
+        })();
+    }, []);
+
+    // const lyrics = `
+    //     Lorem ipsum dolor sit amet consectetur.
+    //     Amet quisque diam, sit.
+    //     Interdum lobortis accumsan.
         
-        Pulvinar gravida ac in auctor.
-        Suspendisse, sed scelerisque.
-        Donec lectus porttitor et.
+    //     Pulvinar gravida ac in auctor.
+    //     Suspendisse, sed scelerisque.
+    //     Donec lectus porttitor et.
         
-        Cam eu in tristique nec.
-        In sit gravida condimentum.
-        Elementum.
-    `;
+    //     Cam eu in tristique nec.
+    //     In sit gravida condimentum.
+    //     Elementum.
+    // `;
 
     // update selected artist
     function handleSelect(value) {
@@ -32,13 +54,31 @@ export default function LyricsPage() {
     }
 
     // handle submit request
-    function handleSubmit() {
+    async function handleSubmit() {
         if (selectedArtist === '')
             return;
 
-        console.log(selectedArtist);
         setSubmitted(true);
         setLoading(true);
+
+        await fetch('/api/lyrics', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ artist: selectedArtist })
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            const lyrics = data.lyrics;
+            setLoading(false);
+            setSubmitted(true);
+            setLyrics(lyrics);
+        })
     }
 
     return (

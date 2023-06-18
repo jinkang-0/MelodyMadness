@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import SendButton from "../components/SendButton";
 import Loading from "../components/Loading";
 import AudioPlayer from "../components/AudioPlayer";
-import axios from "axios";
 
 export default function MelodyPage() {
 
@@ -11,7 +9,6 @@ export default function MelodyPage() {
     const [hasSubmitted, setSubmitted] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [audioFile, setAudioFile] = useState('');
-    const navigate = useNavigate();
 
     // handle text input
     function handleInput(e) {
@@ -19,30 +16,34 @@ export default function MelodyPage() {
     }
 
     // handle submit request
-    function handleSubmit() {
+    async function handleSubmit() {
         if (prompt === '')
             return;
 
         setSubmitted(true);
         setLoading(true);
 
-        axios
-            .post('/api/melody', { prompt: prompt })
-            .then(res => {
-                const data = res.data;
-                console.log(data);
-                
-                // const data = res.data;
-                // if (!data)
-                //     navigate('/error');
-                
-                // setAudioFile(data.audioFile);
-                // setLoading(false);
-            })
-            .catch(err => {
-                console.log("Error:", err);
-                navigate('/error');
-            });
+        await fetch('/api/melody', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers:{
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ prompt: prompt })
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            const base64String = data.audioFile;
+            const wavString = "data:audio/wav;base64," + base64String;
+            setAudioFile(wavString);
+            setLoading(false);
+            setSubmitted(true);
+            // const snd = new Audio(wavString);
+            // snd.play(); 
+        });
     }
 
     return (
@@ -60,7 +61,7 @@ export default function MelodyPage() {
                     :
                     <div className="h-full flex flex-col mt-16 w-1/3">
                         <p className="text-start mb-2">Generated melodies!</p>
-                        <AudioPlayer audioFile={audioFile} />
+                        <audio src={audioFile} controls={true}></audio>
                     </div>
             )}
         </main>

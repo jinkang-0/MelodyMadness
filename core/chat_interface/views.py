@@ -1,8 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.shortcuts import render
-from scripts import midi
-from os import path
 import base64
 from scipy.io import wavfile
 import io

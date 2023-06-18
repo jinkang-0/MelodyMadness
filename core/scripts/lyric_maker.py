@@ -1,5 +1,6 @@
 import os
 import openai
+import re
 from dotenv import load_dotenv, dotenv_values
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -28,20 +29,34 @@ def scrape_songs(artist):
 
     return lyrics
 
-
-def generate_prompt(artist):
+def generate_lyric_prompt(artist):
     return f'''Pretend that you are an up and coming artist and create a totally unique hit song inspired by {artist}.\nHere are some of their greatest works for inspiration!
     {scrape_songs(artist)}
         '''
 
-response = openai.Completion.create(
-  model="text-davinci-003",
-  prompt=generate_prompt("Tupac"),
-  temperature=1,
-  max_tokens=800,
-  top_p=1,
-  frequency_penalty=0.0,
-  presence_penalty=0.0
-)
+def generate_melody_prompt():
+    music_prompt = "Generate a melody in the form of a list of (pitch, duration) pairs in Python Syntax, where the pitch uses MIDI standards and the duration represents the number of quarter notes. Use a pitch of 0 to specify rest"
+    requirements = " REQUIREMENTS: Make sure that the melody stays between MIDI pitch 50 and MIDI pitch 100, that the melody is at least 20 notes in length, that the melody is repeatable, and that the melody gives a happy feeling but has a twist at the end"
 
-print(response.choices[0].text)
+    return music_prompt + requirements
+
+def chat_response(prompt):
+    response = openai.Completion.create(
+      model="text-davinci-003",
+      prompt= prompt,
+      temperature=1,
+      max_tokens=800,
+      top_p=1,
+      frequency_penalty=0.0,
+      presence_penalty=0.0
+    )
+    return response.choices[0].text
+
+def generate_melody():
+    initial_response = chat_response(generate_melody_prompt())
+    regex = re.search("\[(.+)\]", initial_response)
+    harmonic_array = eval(regex.group())
+    return harmonic_array
+
+def generate_lyrics(artist):
+    return chat_response(generate_lyric_prompt(artist))

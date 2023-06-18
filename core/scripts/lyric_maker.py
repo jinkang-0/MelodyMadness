@@ -5,7 +5,6 @@ from dotenv import load_dotenv, dotenv_values
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-
 # Initialize Environment Variables
 load_dotenv()
 keys = dotenv_values(".env.local")
@@ -28,12 +27,14 @@ def scrape_songs(artist):
             lyrics += "\n"
 
     return lyrics
+
 def get_artists():
     array = []
     attributes = collection.find()
     for attribute in attributes:
         array.append(attribute["name"])
     return array
+
 def generate_lyric_prompt(artist):
     return f'''Pretend that you are an up and coming artist and create a totally unique hit song inspired by {artist}.\nHere are some of their greatest works for inspiration!
     {scrape_songs(artist)}
@@ -41,7 +42,7 @@ def generate_lyric_prompt(artist):
 
 def generate_melody_prompt():
     music_prompt = "Generate a melody in the form of a list of (pitch, duration) pairs in Python Syntax, where the pitch uses MIDI standards and the duration represents the number of quarter notes. Use a pitch of 0 to specify rest"
-    requirements = " REQUIREMENTS: Make sure that the melody stays between MIDI pitch 50 and MIDI pitch 100, that the melody is at least 20 notes in length, that the melody is repeatable, and that the melody gives a happy feeling but has a twist at the end"
+    requirements = " REQUIREMENTS: Make sure that the melody stays between MIDI pitch 50 and MIDI pitch 100, that the melody is at least 20 notes in length, and satisfies: "
 
     return music_prompt + requirements
 
@@ -57,8 +58,8 @@ def chat_response(prompt):
     )
     return response.choices[0].text
 
-def generate_melody():
-    initial_response = chat_response(generate_melody_prompt())
+def generate_melody(prompt):
+    initial_response = chat_response(generate_melody_prompt() + prompt)
     regex = re.search("\[(.+)\]", initial_response)
     harmonic_array = eval(regex.group())
     return harmonic_array

@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 import base64
 from scipy.io import wavfile
+from scripts import midi
+from scripts.lyric_maker import generate_melody, generate_lyrics, get_artists
 import io
 
 def front(request):
@@ -15,10 +17,8 @@ def melody(request):
 
     # handle post request
     if request.method == "POST":
-        #  Replace with chat GPT output
-        melody = [
-            (60, 1), (62, 1), (64, 1), (65, 1), (67, 1), (69, 1), (71, 1), (72, 2),(71, 1), (69, 1), (67, 1), (65, 1), (64, 1), (62, 1), (60, 2), (72, 1), (74, 1), (76, 1), (77, 1), (79, 1)  
-        ]
+        user_prompt = request.POST.get("prompt")
+        melody = generate_melody(user_prompt)
 
         mid = midi.generate_midi(480, melody, 0)
         midi.export_midi(mid, 100, 'output.wav')
@@ -39,4 +39,13 @@ def melody(request):
         return JsonResponse({ "audioFile": encoded_string })
 
     return render(request, "index.html", context)
+
+
+@csrf_exempt
+def lyrics(request):
+    if request.method == 'POST':
+        selected_artist = request.POST.get("artist")
+        return JsonResponse({ "lyrics": generate_lyrics(selected_artist) })
+    else:
+        return JsonResponse({ "artists": get_artists() })
 

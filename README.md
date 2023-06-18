@@ -1,7 +1,9 @@
 # Melody Madness
 
 Python Libraries
-- google-cloud-storage
-- google-cloud-texttospeech
 - mido
 - pydub
+- pymongo
+- openai
+- scipy
+- django

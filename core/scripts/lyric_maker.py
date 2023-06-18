@@ -28,7 +28,8 @@ def scrape_songs(artist):
             lyrics += "\n"
 
     return lyrics
-
+def get_artists():
+    return ["Tupac", "Miley Cyrus", "Eminem","Jay-Z"]
 def generate_lyric_prompt(artist):
     return f'''Pretend that you are an up and coming artist and create a totally unique hit song inspired by {artist}.\nHere are some of their greatest works for inspiration!
     {scrape_songs(artist)}

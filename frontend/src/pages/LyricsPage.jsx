@@ -7,12 +7,11 @@ import { useEffect, useState } from "react";
 
 export default function LyricsPage() {
 
-    // const artists = ['Drake', 'JayZ', 'Miley Cyrus', 'Eminem'];
     const [artists, setArtists] = useState([]);
     const [hasSubmitted, setSubmitted] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const [lyrics, setLyrics] = useState("");
-    var selectedArtist = "";
+    const [selectedArtist, setSelectedArtist] = useState("");
 
     useEffect(() => {
         (async () => {
@@ -36,7 +35,7 @@ export default function LyricsPage() {
 
     // update selected artist
     function handleSelect(value) {
-        selectedArtist = value;
+        setSelectedArtist(value);
     }
 
     // handle submit request
@@ -71,7 +70,7 @@ export default function LyricsPage() {
         <main className="flex flex-col items-center h-full">
             <div className="flex flex-col items-start mt-16 w-1/3">
                 <p className="mb-2">Generate lyrics in the style of an artist!</p>
-                <ArtistSelect artists={artists} value={selectedArtist} onChange={e => handleSelect(e.target.value)} />
+                <ArtistSelect artists={artists} onChange={handleSelect} />
                 <ActionButton text="Submit" className="bg-twitterBlue mx-auto mt-4" onClick={handleSubmit} />
             </div>
             {(hasSubmitted) && (

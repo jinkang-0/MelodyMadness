@@ -7,7 +7,9 @@ export default function CoverPage() {
 
     const [fileName, setFileName] = useState('');
     const [file, setFile] = useState(null);
-    var isLoading = false;
+    const [image, setImage] = useState(null);
+    const [hasSubmitted, setSubmitted] = useState(false);
+    const [isLoading, setLoading] = useState(false);
 
     // handle file upload
     function handleUpload(e) {
@@ -19,6 +21,8 @@ export default function CoverPage() {
     // handle submit request
     function handleSubmit() {
         console.log(file);
+        setSubmitted(true);
+        setLoading(true);
     }
 
     return (
@@ -32,16 +36,17 @@ export default function CoverPage() {
                 </div>
                 <ActionButton text="Submit" className="bg-twitterBlue mx-auto mt-4" onClick={handleSubmit} />
             </div>
-            {(isLoading) ?
-                <Loading />
-                :
-                <SlideUpBox className="w-2/5 mt-16">
-                    <div className="w-4/5 h-1 mx-auto border-t border-t-lightGray"></div>
-                    <div className="w-full aspect-square my-16">
-                        <img className="w-full h-full aspect-square" src="/unsplash_image.png" alt="generated_image" />
-                    </div>
-                </SlideUpBox>
-            }
+            {(hasSubmitted) && (
+                (isLoading) ?
+                    <Loading />
+                    :
+                    <SlideUpBox className="w-2/5 mt-16">
+                        <div className="w-4/5 h-1 mx-auto border-t border-t-lightGray"></div>
+                        <div className="w-full aspect-square my-16">
+                            <img className="w-full h-full aspect-square" src={`url(${image})`} alt="generated_image" />
+                        </div>
+                    </SlideUpBox>
+            )}
         </main>
     );
 }

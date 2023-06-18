@@ -8,7 +8,7 @@ import axios from "axios";
 export default function MelodyPage() {
 
     var prompt = '';
-    const [isWaiting, setWaiting] = useState(false);
+    const [hasSubmitted, setSubmitted] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [audioFile, setAudioFile] = useState('');
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function MelodyPage() {
         if (prompt === '')
             return;
 
-        setWaiting(true);
+        setSubmitted(true);
         setLoading(true);
 
         axios
@@ -34,7 +34,6 @@ export default function MelodyPage() {
                     navigate('/error');
                 
                 setAudioFile(data.audioFile);
-                setWaiting(false);
                 setLoading(false);
             })
             .catch(err => {
@@ -52,7 +51,7 @@ export default function MelodyPage() {
                     <SendButton onClick={handleSubmit} />
                 </div>
             </div>
-            {(isWaiting) && (
+            {(hasSubmitted) && (
                 (isLoading) ?
                     <Loading />
                     :

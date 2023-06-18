@@ -1,11 +1,12 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from django.shortcuts import render
 import base64
 from scipy.io import wavfile
 from scripts import midi
 from scripts.lyric_maker import generate_melody, generate_lyrics, get_artists
 import io
+import json
 
 def front(request):
     context = {}
@@ -13,11 +14,11 @@ def front(request):
 
 @csrf_exempt
 def melody(request):
-    context = { 'test': 'hello world' }
+    context = {}
 
     # handle post request
     if request.method == "POST":
-        user_prompt = request.POST.get("prompt")
+        user_prompt = json.loads(request.body.decode())['prompt']
         melody = generate_melody(user_prompt)
 
         mid = midi.generate_midi(480, melody, 0)

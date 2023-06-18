@@ -35,11 +35,12 @@ export default function MelodyPage() {
             return res.json();
         })
         .then(data => {
-            const base64String = data.audioFile;
-            const wavString = "data:audio/wav;base64," + base64String;
-            setAudioFile(wavString);
-            setLoading(false);
-            setSubmitted(true);
+            console.log(data);
+            // const base64String = data.audioFile;
+            // const wavString = "data:audio/wav;base64," + base64String;
+            // setAudioFile(wavString);
+            // setLoading(false);
+            // setSubmitted(true);
             // const snd = new Audio(wavString);
             // snd.play(); 
         });

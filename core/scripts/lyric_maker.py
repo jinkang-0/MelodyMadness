@@ -60,7 +60,7 @@ def chat_response(prompt):
 
 def generate_melody(prompt):
     initial_response = chat_response(generate_melody_prompt() + prompt)
-    regex = re.search("\[(.+)\]", initial_response)
+    regex = re.search("(\[[\s\S]+\])", initial_response)
     harmonic_array = eval(regex.group())
     return harmonic_array
 

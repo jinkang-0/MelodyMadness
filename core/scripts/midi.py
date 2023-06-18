@@ -1,4 +1,5 @@
 import mido
+import sys
 from collections import defaultdict
 from pydub import AudioSegment
 from pydub.generators import Sine
@@ -10,7 +11,7 @@ def note_to_freq(note, concert_A=440.0):
     '''
     return (2.0 ** ((note - 69) / 12.0)) * concert_A
 
-def ticks_to_ms(ticks, tempo):
+def ticks_to_ms(mid, ticks, tempo):
     tick_ms = (60000.0 / tempo) / mid.ticks_per_beat
     return ticks * tick_ms
 
@@ -27,7 +28,7 @@ def export_midi(mid, tempo, outputPath):
         current_notes = defaultdict(dict)
 
         for msg in track:
-            current_pos += ticks_to_ms(msg.time, tempo)
+            current_pos += ticks_to_ms(mid, msg.time, tempo)
 
             if msg.type == 'note_on':
                 current_notes[msg.channel][msg.note] = (current_pos, msg)
@@ -69,33 +70,34 @@ def generate_midi(ticks_per_beat, pitch_duration_pairs, instrument):
 
 
 # example usage
-ticks_per_beat = 480
-melody = [
-    (60, 1), # C4 (middle C), quarter note
-    (62, 1), # D4, quarter note
-    (64, 1), # E4, quarter note
-    (65, 1), # F4, quarter note
-    (67, 1), # G4, quarter note
-    (69, 1), # A4, quarter note
-    (71, 1), # B4, quarter note
-    (72, 2), # C5 (1 octave above middle C), half note
-    (71, 1), # B4, quarter note
-    (69, 1), # A4, quarter note
-    (67, 1), # G4, quarter note
-    (65, 1), # F4, quarter note
-    (64, 1), # E4, quarter note
-    (62, 1), # D4, quarter note
-    (60, 2), # C4, half note
-    (72, 1), # C5, quarter note
-    (74, 1), # D5, quarter note
-    (76, 1), # E5, quarter note
-    (77, 1), # F5, quarter note
-    (79, 1)  # G5, quarter note
-]
-tempo = 100  # bpm
+# ticks_per_beat = 480
+# melody = [
+#     (60, 1), # C4 (middle C), quarter note
+#     (62, 1), # D4, quarter note
+#     (64, 1), # E4, quarter note
+#     (65, 1), # F4, quarter note
+#     (67, 1), # G4, quarter note
+#     (69, 1), # A4, quarter note
+#     (71, 1), # B4, quarter note
+#     (72, 2), # C5 (1 octave above middle C), half note
+#     (71, 1), # B4, quarter note
+#     (69, 1), # A4, quarter note
+#     (67, 1), # G4, quarter note
+#     (65, 1), # F4, quarter note
+#     (64, 1), # E4, quarter note
+#     (62, 1), # D4, quarter note
+#     (60, 2), # C4, half note
+#     (72, 1), # C5, quarter note
+#     (74, 1), # D5, quarter note
+#     (76, 1), # E5, quarter note
+#     (77, 1), # F5, quarter note
+#     (79, 1)  # G5, quarter note
+# ]
+# tempo = 100  # bpm
 
-# this makes a small melody using instrument 0 - Acoustic Grand Piano
-mid = generate_midi(ticks_per_beat, melody, 0)
+# # this makes a small melody using instrument 0 - Acoustic Grand Piano
+# mid = generate_midi(ticks_per_beat, melody, 0)
 
-# this outputs the MIDI object into "output.wav"
-export_midi(mid, tempo, 'output.wav')
+# # this outputs the MIDI object into "output.wav"
+# export_midi(mid, tempo, 'output.wav')
+

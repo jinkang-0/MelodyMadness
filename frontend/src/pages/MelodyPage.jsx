@@ -27,14 +27,17 @@ export default function MelodyPage() {
         setLoading(true);
 
         axios
-            .post('/melody', { prompt: prompt })
+            .post('/api/melody', { prompt: prompt })
             .then(res => {
                 const data = res.data;
-                if (!data)
-                    navigate('/error');
+                console.log(data);
                 
-                setAudioFile(data.audioFile);
-                setLoading(false);
+                // const data = res.data;
+                // if (!data)
+                //     navigate('/error');
+                
+                // setAudioFile(data.audioFile);
+                // setLoading(false);
             })
             .catch(err => {
                 console.log("Error:", err);
